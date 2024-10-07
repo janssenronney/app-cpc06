@@ -73,17 +73,32 @@
 </main>
 <script>
     // Função para listar produtos (consulta)
-    async function listarProdutos() {
-        const response = await fetch('/api/produtos');
-        const produtos = await response.json();
-        let produtoList = document.getElementById('produto-list');
-        produtoList.innerHTML = '';
-        produtos.forEach(produto => {
+    async function listarFornecedor() {
+        // Realiza uma requisição HTTP GET para a API de fornecedores
+        const response = await fetch('/api/fornecedor');
+
+        // Espera pela resposta da API e converte o resultado para JSON
+        const fornecedores = await response.json();
+
+        // Obtém o elemento da página que contém a lista de fornecedores (provavelmente uma <ul> ou <ol>)
+        let fornecedorList = document.getElementById('fornecedor-list');
+
+        // Limpa o conteúdo da lista de fornecedores, para evitar duplicatas ao atualizar a página
+        fornecedorList.innerHTML = '';
+
+        // Percorre cada fornecedor retornado pela API
+        fornecedores.forEach(fornecedor => {
+            // Cria um novo elemento <li> para cada fornecedor
             let li = document.createElement('li');
-            li.innerText = `${produto.nome} - R$ ${produto.preco}`;
-            produtoList.appendChild(li);
+
+            // Define o conteúdo do <li> com o nome, código e conta de despesa do fornecedor
+            li.innerText = `Nome: ${fornecedor.nome}, Código: ${fornecedor.cod_fornecedor}, Conta Despesa: ${fornecedor.cont_despesa}`;
+
+            // Adiciona o novo <li> à lista de fornecedores (ul ou ol)
+            fornecedorList.appendChild(li);
         });
     }
+
 
     // Exibir consulta ao carregar a página
     listarProdutos();
