@@ -1,26 +1,92 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minha Página Java</title>
-    <!-- Link do CSS -->
+    <title>Página Inicial - Gestão de Contratos</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Estilos básicos */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+        nav {
+            background-color: #444;
+            overflow: hidden;
+        }
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+        nav ul li {
+            float: left;
+        }
+        nav ul li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+        nav ul li a:hover {
+            background-color: #555;
+        }
+        main {
+            padding: 2rem;
+            text-align: center;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
 </head>
 <body>
+<!-- Cabeçalho da página -->
 <header>
-    <h1>Bem-vindo à Minha Aplicação Java!</h1>
+    <h1>Gestão de Contratos</h1>
 </header>
+
+<!-- Menu de navegação horizontal -->
 <nav>
-    <a href="#">Início</a>
-    <a href="#">Sobre</a>
-    <a href="#">Contato</a>
+    <ul>
+        <li><a href="cadastro.html">Cadastro</a></li> <!-- Link para página de Cadastro -->
+        <li><a href="consulta.html">Consulta</a></li> <!-- Link para página de Consulta -->
+    </ul>
 </nav>
+
+<!-- Conteúdo principal com a seção de consulta de produtos -->
 <main>
-    <p>Esta é uma simples página HTML com CSS integrada a uma aplicação Java.</p>
+    <section id="consulta" class="hidden">
+        <h2>Consulta de Produtos</h2>
+        <ul id="produto-list"></ul>
+    </section>
 </main>
-<footer>
-    <p>Copyright &copy; 2024. Todos os direitos reservados.</p>
-</footer>
+<script>
+    // Função para listar produtos (consulta)
+    async function listarProdutos() {
+        const response = await fetch('/api/produtos');
+        const produtos = await response.json();
+        let produtoList = document.getElementById('produto-list');
+        produtoList.innerHTML = '';
+        produtos.forEach(produto => {
+            let li = document.createElement('li');
+            li.innerText = `${produto.nome} - R$ ${produto.preco}`;
+            produtoList.appendChild(li);
+        });
+    }
+
+    // Exibir consulta ao carregar a página
+    listarProdutos();
+</script>
 </body>
 </html>

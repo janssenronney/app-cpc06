@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro - Gestão de Contratos </title>
+    <style>
+        /* Estilos básicos de página */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        /* Estilo para o cabeçalho */
+        header {
+            background-color: #333;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        /* Estilo para o menu de navegação */
+        nav {
+            background-color: #444;
+            display: flex;
+            justify-content: space-between; /* Distribui os itens do menu de navegação */
+            padding: 0;
+        }
+
+        /* Estilo para as listas de navegação (ul) */
+        nav ul {
+            list-style-type: none; /* Remove os marcadores de lista */
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        /* Estilo para os itens da lista de navegação */
+        nav ul li {
+            margin: 0;
+        }
+
+        /* Estilo para os links de navegação */
+        nav ul li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+
+        /* Estilo para mudar a cor ao passar o mouse */
+        nav ul li a:hover {
+            background-color: #555;
+        }
+
+        /* Estilo do conteúdo principal da página */
+        main {
+            padding: 2rem;
+            text-align: center;
+        }
+
+        /* Estilos para os campos de input dos formulários */
+        .input-group {
+            margin: 10px 0;
+        }
+
+        label {
+            margin-right: 10px;
+        }
+
+        /* Esconde os formulários inicialmente */
+        #formulario-fornecedor, #formulario-contrato {
+            display: none;
+        }
+
+        /* Estilo para os botões */
+        .button {
+            padding: 10px 20px;
+            background-color: #444;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin: 10px;
+        }
+
+        .button:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+<!-- Cabeçalho da página com o título -->
+<header>
+    <h1>Gestão de Contratos - Cadastro</h1>
+</header>
+
+<!-- Menu de navegação horizontal com as opções "Fornecedor", "Contrato" e "Home" -->
+<nav>
+    <ul>
+        <!-- Botão que exibe o formulário de Fornecedor ao ser clicado -->
+        <li><a href="#" onclick="exibirFormulario('fornecedor')">Fornecedor</a></li>
+        <!-- Botão que exibe o formulário de Contrato ao ser clicado -->
+        <li><a href="#" onclick="exibirFormulario('contrato')">Contrato</a></li>
+    </ul>
+    <ul>
+        <!-- Botão que redireciona para a página inicial -->
+        <li><a href="index.html">Home</a></li> <!-- Botão Home -->
+    </ul>
+</nav>
+
+<!-- Área principal onde os formulários serão exibidos -->
+<main>
+    <h2>Escolha uma das opções acima para cadastrar</h2>
+
+    <!-- Formulário de cadastro de fornecedor (inicialmente escondido) -->
+    <div id="formulario-fornecedor">
+        <h3>Cadastro de Fornecedor</h3>
+        <div class="input-group">
+            <label for="nome-fornecedor">Nome:</label>
+            <input type="text" id="nome-fornecedor" placeholder="Nome do Fornecedor">
+        </div>
+        <div class="input-group">
+            <label for="codigo-fornecedor">Código:</label>
+            <input type="text" id="codigo-fornecedor" placeholder="Código do Fornecedor">
+        </div>
+        <div class="input-group">
+            <label for="conta-fornecedor">Conta:</label>
+            <input type="text" id="conta-fornecedor" placeholder="Conta de Despesa">
+        </div>
+        <!-- Botão para adicionar fornecedor -->
+        <button class="button" onclick="adicionarFornecedor()">Adicionar Fornecedor</button>
+    </div>
+
+    <!-- Formulário de cadastro de contrato (inicialmente escondido) -->
+    <div id="formulario-contrato">
+        <h3>Cadastro de Contrato</h3>
+        <div class="input-group">
+            <label for="numparcelas">Número de Parcelas:</label>
+            <input type="number" id="numparcelas" placeholder="Número de Parcelas">
+        </div>
+        <div class="input-group">
+            <label for="data-inicio">Data de Início:</label>
+            <input type="date" id="data-inicio">
+        </div>
+        <div class="input-group">
+            <label for="data-fim">Data de Fim:</label>
+            <input type="date" id="data-fim">
+        </div>
+        <div class="input-group">
+            <label for="valor">Valor:</label>
+            <input type="number" id="valor" placeholder="Valor do Contrato">
+        </div>
+        <div class="input-group">
+            <label for="objeto">Objeto do Contrato:</label>
+            <input type="text" id="objeto" placeholder="Objeto do Contrato">
+        </div>
+        <!-- Dropdown para selecionar um fornecedor já cadastrado -->
+        <div class="input-group">
+            <label for="fornecedor-contrato">Fornecedor:</label>
+            <select id="fornecedor-contrato"></select>
+        </div>
+        <!-- Botão para adicionar contrato -->
+        <button class="button" onclick="adicionarContrato()">Adicionar Contrato</button>
+    </div>
+</main>
+
+<script>
+    // Função que exibe o formulário de acordo com a opção selecionada (Fornecedor ou Contrato)
+    function exibirFormulario(formulario) {
+        const formFornecedor = document.getElementById('formulario-fornecedor'); // Formulário de fornecedor
+        const formContrato = document.getElementById('formulario-contrato'); // Formulário de contrato
+
+        if (formulario === 'fornecedor') {
+            formFornecedor.style.display = 'block'; // Exibe o formulário de fornecedor
+            formContrato.style.display = 'none';   // Esconde o formulário de contrato
+        } else if (formulario === 'contrato') {
+            formFornecedor.style.display = 'none'; // Esconde o formulário de fornecedor
+            formContrato.style.display = 'block';  // Exibe o formulário de contrato
+            carregarFornecedores(); // Carrega fornecedores para o dropdown de contratos
+        }
+    }
+
+    // Função que adiciona um novo fornecedor (simulação de envio para o backend)
+    async function adicionarFornecedor() {
+        const nome = document.getElementById('nome-fornecedor').value;
+        const codigo = document.getElementById('codigo-fornecedor').value;
+        const conta = document.getElementById('conta-fornecedor').value;
+
+        // Chamada de API simulada para enviar dados do fornecedor
+        await fetch('/api/fornecedores', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ nome, codigo, conta })
+        });
+
+        alert('Fornecedor adicionado com sucesso!');
+    }
+
+    // Função que carrega a lista de fornecedores no dropdown de contratos
+    async function carregarFornecedores() {
+        const response = await fetch('/api/fornecedores'); // Faz uma requisição para buscar fornecedores
+        const fornecedores = await response.json(); // Converte a resposta para JSON
+        const select = document.getElementById('fornecedor-contrato'); // Seleciona o dropdown
+        select.innerHTML = ''; // Limpa a lista de opções anteriores
+
+        // Itera sobre os fornecedores retornados e adiciona opções ao dropdown
+        fornecedores.forEach(fornecedor => {
+            const option = document.createElement('option'); // Cria uma nova opção
+            option.value = fornecedor.id; // Define o valor da opção (id do fornecedor)
+            option.text = fornecedor.nome; // Define o texto da opção (nome do fornecedor)
+            select.appendChild(option); // Adiciona a opção ao dropdown
+        });
+    }
+
+    // Função que adiciona um novo contrato (simulação de envio para o backend)
+    async function adicionarContrato() {
+        const fornecedorId = document.getElementById('fornecedor-contrato').value;
+        const numParcelas = document.getElementById('numparcelas').value;
+        const dataInicio = document.getElementById('data-inicio').value;
+        const dataFim = document.getElementById('data-fim').value;
+        const valor = document.getElementById('valor').value;
+        const objeto = document.getElementById('objeto').value;
+
+        // Chamada de API simulada para enviar dados do contrato
+        await fetch('/api/contratos', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ fornecedorId, numParcelas, dataInicio, dataFim, valor, objeto })
+        });
+
+        alert('Contrato adicionado com sucesso!');
+    }
+</script>
+</body>
+</html>

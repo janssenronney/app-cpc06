@@ -13,11 +13,14 @@ public class Fornecedor {
     private int id_fornecedor;
     private String nome;
     private int cont_despesa;
+    private String cod_fornecedor;
+
     // Construtor vazio obrigatório para o JPA
     public Fornecedor() {}
     public Fornecedor(String nome, int cont_despesa) {
         this.nome = nome;
         this.cont_despesa = cont_despesa;
+        this.cod_fornecedor = cod_fornecedor;
     }
     public int getId_fornecedor() {
         return id_fornecedor;
@@ -37,5 +40,6 @@ public class Fornecedor {
     public void setCont_despesa(int cont_despesa) {
         this.cont_despesa = cont_despesa;
     }
-
+    public String getCod_fornecedor() {return cod_fornecedor;}
+    public void setCod_fornecedor(String cod_fornecedor) {this.cod_fornecedor = cod_fornecedor;}
 }
