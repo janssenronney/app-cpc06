@@ -1,7 +1,7 @@
 CREATE TABLE tbl_fornecedor (
     id_fornecedor INTEGER PRIMARY KEY,
-    cod_fornecedor VARCHAR(6),
-    forn_nome VARCHAR(50),
+    cod_fornecedor VARCHAR(6) UNIQUE ,
+    for_nome VARCHAR(50) UNIQUE ,
     cont_despesa INTEGER,
     UNIQUE (id_fornecedor, cod_fornecedor)
 );

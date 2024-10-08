@@ -19,7 +19,7 @@ public class FornecedorService {
 
     // Metodo para listar todos os fornecedores
     public List<Fornecedor> listarfornecedor() {
-        // Retorna a lista de todos os fornecedores usando o método findAll do repositório
+        // Retorna a lista de todos os fornecedores usando o metodo findAll do repositório
         return fornecedorRepository.findAll();
     }
 
@@ -36,7 +36,7 @@ public class FornecedorService {
     }
 
     // Metodo para deletar um fornecedor pelo ID
-    public void deletarfornecedor(Integer id_fornecedor) {
+    public void deletarFornecedor(Integer id_fornecedor) {
         // Deleta o fornecedor usando o mEtodo deleteById do repositório
         fornecedorRepository.deleteById(id_fornecedor);
     }
