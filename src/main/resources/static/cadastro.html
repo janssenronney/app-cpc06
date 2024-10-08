@@ -170,53 +170,64 @@
 <script>
     // Função que exibe o formulário de acordo com a opção selecionada (Fornecedor ou Contrato)
     function exibirFormulario(formulario) {
-        const formFornecedor = document.getElementById('formulario-fornecedor'); // Formulário de fornecedor
-        const formContrato = document.getElementById('formulario-contrato'); // Formulário de contrato
+        // Obtém os elementos do DOM referentes aos formulários de fornecedor e contrato
+        const formFornecedor = document.getElementById('formulario-fornecedor');
+        const formContrato = document.getElementById('formulario-contrato');
 
+        // Verifica qual formulário deve ser exibido com base no parâmetro 'formulario'
         if (formulario === 'fornecedor') {
-            formFornecedor.style.display = 'block'; // Exibe o formulário de fornecedor
-            formContrato.style.display = 'none';   // Esconde o formulário de contrato
+            // Exibe o formulário de fornecedor e oculta o de contrato
+            formFornecedor.style.display = 'block';
+            formContrato.style.display = 'none';
         } else if (formulario === 'contrato') {
-            formFornecedor.style.display = 'none'; // Esconde o formulário de fornecedor
-            formContrato.style.display = 'block';  // Exibe o formulário de contrato
-            carregarFornecedores(); // Carrega fornecedores para o dropdown de contratos
+            // Exibe o formulário de contrato e oculta o de fornecedor
+            formFornecedor.style.display = 'none';
+            formContrato.style.display = 'block';
+            // Carrega a lista de fornecedores cadastrados ao exibir o formulário de contrato
+            carregarFornecedores();
         }
     }
 
-    // Função que adiciona um novo fornecedor (simulação de envio para o backend)
+    // Função assíncrona para adicionar um novo fornecedor ao sistema (envia dados ao back-end)
     async function adicionarFornecedor() {
+        // Obtém os valores dos campos de input do formulário de fornecedor
         const nome = document.getElementById('nome-fornecedor').value;
         const codigo = document.getElementById('codigo-fornecedor').value;
         const conta = document.getElementById('conta-fornecedor').value;
 
-        // Chamada de API simulada para enviar dados do fornecedor
-        await fetch('/api/fornecedores', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ nome, codigo, conta })
+        // Envia uma requisição POST para o back-end com os dados do fornecedor
+        await fetch('/api/fornecedor', {
+            method: 'POST',  // Define o método HTTP como POST
+            headers: { 'Content-Type': 'application/json' },  // Especifica o tipo de conteúdo como JSON
+            body: JSON.stringify({ nome, codigo, conta })  // Converte os dados do fornecedor para JSON e envia no corpo da requisição
         });
 
+        // Exibe uma mensagem de sucesso após o fornecedor ser adicionado
         alert('Fornecedor adicionado com sucesso!');
     }
 
-    // Função que carrega a lista de fornecedores no dropdown de contratos
+    // Função assíncrona que carrega a lista de fornecedores e a exibe no dropdown do contrato
     async function carregarFornecedores() {
-        const response = await fetch('/api/fornecedores'); // Faz uma requisição para buscar fornecedores
+        // Faz uma requisição GET para o back-end para buscar a lista de fornecedores cadastrados
+        const response = await fetch('/api/fornecedor');
         const fornecedores = await response.json(); // Converte a resposta para JSON
-        const select = document.getElementById('fornecedor-contrato'); // Seleciona o dropdown
-        select.innerHTML = ''; // Limpa a lista de opções anteriores
 
-        // Itera sobre os fornecedores retornados e adiciona opções ao dropdown
+        // Seleciona o elemento de dropdown do formulário de contrato
+        const select = document.getElementById('fornecedor-contrato');
+        select.innerHTML = ''; // Limpa o dropdown antes de adicionar novos fornecedores
+
+        // Itera sobre a lista de fornecedores e adiciona cada um como uma opção no dropdown
         fornecedores.forEach(fornecedor => {
-            const option = document.createElement('option'); // Cria uma nova opção
-            option.value = fornecedor.id; // Define o valor da opção (id do fornecedor)
-            option.text = fornecedor.nome; // Define o texto da opção (nome do fornecedor)
+            const option = document.createElement('option'); // Cria um novo elemento de opção
+            option.value = fornecedor.id_fornecedor; // Define o valor da opção como o ID do fornecedor
+            option.text = fornecedor.for_nome; // Define o texto da opção como o nome do fornecedor
             select.appendChild(option); // Adiciona a opção ao dropdown
         });
     }
 
-    // Função que adiciona um novo contrato (simulação de envio para o backend)
+    // Função assíncrona para adicionar um novo contrato ao sistema (envia dados ao back-end)
     async function adicionarContrato() {
+        // Obtém os valores dos campos de input do formulário de contrato
         const fornecedorId = document.getElementById('fornecedor-contrato').value;
         const numParcelas = document.getElementById('numparcelas').value;
         const dataInicio = document.getElementById('data-inicio').value;
@@ -224,13 +235,14 @@
         const valor = document.getElementById('valor').value;
         const objeto = document.getElementById('objeto').value;
 
-        // Chamada de API simulada para enviar dados do contrato
-        await fetch('/api/contratos', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ fornecedorId, numParcelas, dataInicio, dataFim, valor, objeto })
+        // Envia uma requisição POST para o back-end com os dados do contrato
+        await fetch('/api/contrato', {
+            method: 'POST',  // Define o método HTTP como POST
+            headers: { 'Content-Type': 'application/json' },  // Especifica o tipo de conteúdo como JSON
+            body: JSON.stringify({ fornecedorId, numParcelas, dataInicio, dataFim, valor, objeto })  // Converte os dados do contrato para JSON e envia no corpo da requisição
         });
 
+        // Exibe uma mensagem de sucesso após o contrato ser adicionado
         alert('Contrato adicionado com sucesso!');
     }
 </script>

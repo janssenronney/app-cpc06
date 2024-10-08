@@ -1,5 +1,5 @@
 package com.ifrs.app_cpc06.controller;
-import com.ifrs.app_cpc06.models.Fornecedor;
+import com.ifrs.app_cpc06.domain.fornecedor.Fornecedor;
 import com.ifrs.app_cpc06.service.FornecedorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -10,16 +10,16 @@ import java.util.Optional;
 @RequestMapping("/fornecedor")
 public class FornecedorController {
 
-    @Autowired  // Injeta automaticamente o ProdutoService, que contém a lógica de negócios.
+    @Autowired  // Injeta automaticamente o FornecedorService, que contém a lógica de negócios.
     private FornecedorService fornecedorService;
     /**
-     * Endpoint GET para listar todos os produtos.
+     * Endpoint GET para listar todos os fornecedor.
      *
-     * @return Lista de produtos.
+     * @return Lista de fornecedor.
      */
-    @GetMapping  // Mapeia requisições HTTP GET para este método.
+    @GetMapping  // Mapeia requisições HTTP GET para este metodo
     public List<Fornecedor> listarFornecedor() {
-        return fornecedorService.listarfornecedor();  // Chama o método listarProdutos() do serviço.
+        return fornecedorService.listarfornecedor();  // Chama o metodo listarProdutos() do serviço.
     }
 
     /**
@@ -39,7 +39,7 @@ public class FornecedorController {
      * @param fornecedor Produto a ser adicionado.
      * @return Produto adicionado.
      */
-    @PostMapping  // Mapeia requisições HTTP POST para este método.
+    @PostMapping  // Mapeia requisições HTTP POST para este metodo.
     public Fornecedor adicionarFornecedor(@RequestBody Fornecedor fornecedor) {
         return fornecedorService.salvarfornecedor(fornecedor);  // Salva o novo fornecedor usando o serviço.
     }
@@ -56,7 +56,7 @@ public class FornecedorController {
         Optional<Fornecedor> fornecedorExistente = fornecedorService.buscarfornecedorPorId(id_fornecedor);  // Verifica se o produto existe.
         if (fornecedorExistente.isPresent()) {
             Fornecedor fornecedor = fornecedorExistente.get();  // Se o produto existir, atualiza os valores.
-            fornecedor.setNome(fornecedorAtualizado.getNome());
+            fornecedor.setFor_nome(fornecedorAtualizado.getFor_nome());
             fornecedor.setCont_despesa(fornecedorAtualizado.getCont_despesa());
             fornecedor.setCod_fornecedor(fornecedorAtualizado.getCod_fornecedor());
             return fornecedorService.salvarfornecedor(fornecedor);  // Salva o produto atualizado.

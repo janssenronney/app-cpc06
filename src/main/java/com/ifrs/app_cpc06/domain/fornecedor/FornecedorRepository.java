@@ -1,6 +1,5 @@
-package com.ifrs.app_cpc06.repositories;
+package com.ifrs.app_cpc06.domain.fornecedor;
 
-import com.ifrs.app_cpc06.models.Fornecedor;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -9,5 +8,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * JpaRepository<Fonecedor, Integer> significa que ela trabalhará com a entidade Fornecedor e sua chave primária é do tipo Integer.
  */
 
-public interface FornecedorRepository extends JpaRepository<Fornecedor, Integer> {
-}
+public interface FornecedorRepository extends JpaRepository<Fornecedor, Integer> {}
