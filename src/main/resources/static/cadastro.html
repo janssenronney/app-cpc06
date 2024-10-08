@@ -128,7 +128,7 @@
         </div>
         <div class="input-group">
             <label for="conta-fornecedor">Conta:</label>
-            <input type="text" id="conta-fornecedor" placeholder="Conta de Despesa">
+            <input type="number" id="conta-fornecedor" placeholder="Conta de Despesa">
         </div>
         <!-- Botão para adicionar fornecedor -->
         <button class="button" onclick="adicionarFornecedor()">Adicionar Fornecedor</button>
@@ -191,15 +191,16 @@
     // Função assíncrona para adicionar um novo fornecedor ao sistema (envia dados ao back-end)
     async function adicionarFornecedor() {
         // Obtém os valores dos campos de input do formulário de fornecedor
-        const nome = document.getElementById('nome-fornecedor').value;
-        const codigo = document.getElementById('codigo-fornecedor').value;
-        const conta = document.getElementById('conta-fornecedor').value;
+        const for_nome = document.getElementById('nome-fornecedor').value;
+        const cod_fornecedor = document.getElementById('codigo-fornecedor').value;
+        const cont_despesa = document.getElementById('conta-fornecedor').value;
 
         // Envia uma requisição POST para o back-end com os dados do fornecedor
-        await fetch('/api/fornecedor', {
-            method: 'POST',  // Define o método HTTP como POST
+        await fetch('/fornecedor', {
+
+            method: 'POST',  // Define o méeodo HTTP como POST
             headers: { 'Content-Type': 'application/json' },  // Especifica o tipo de conteúdo como JSON
-            body: JSON.stringify({ nome, codigo, conta })  // Converte os dados do fornecedor para JSON e envia no corpo da requisição
+            body: JSON.stringify({for_nome, cod_fornecedor, cont_despesa})  // Converte os dados do fornecedor para JSON e envia no corpo da requisição
         });
 
         // Exibe uma mensagem de sucesso após o fornecedor ser adicionado
@@ -209,7 +210,7 @@
     // Função assíncrona que carrega a lista de fornecedores e a exibe no dropdown do contrato
     async function carregarFornecedores() {
         // Faz uma requisição GET para o back-end para buscar a lista de fornecedores cadastrados
-        const response = await fetch('/api/fornecedor');
+        const response = await fetch('/fornecedor');
         const fornecedores = await response.json(); // Converte a resposta para JSON
 
         // Seleciona o elemento de dropdown do formulário de contrato
@@ -237,7 +238,7 @@
 
         // Envia uma requisição POST para o back-end com os dados do contrato
         await fetch('/api/contrato', {
-            method: 'POST',  // Define o método HTTP como POST
+            method: 'POST',  // Define o metodo HTTP como POST
             headers: { 'Content-Type': 'application/json' },  // Especifica o tipo de conteúdo como JSON
             body: JSON.stringify({ fornecedorId, numParcelas, dataInicio, dataFim, valor, objeto })  // Converte os dados do contrato para JSON e envia no corpo da requisição
         });

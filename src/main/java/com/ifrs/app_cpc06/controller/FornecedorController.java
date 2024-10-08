@@ -34,10 +34,10 @@ public class FornecedorController {
     }
 
     /**
-     * Endpoint POST para adicionar um novo produto.
+     * Endpoint POST para adicionar um novo fornecedo.
      *
-     * @param fornecedor Produto a ser adicionado.
-     * @return Produto adicionado.
+     * @param fornecedor a ser adicionado.
+     * @return fornecedor adicionado.
      */
     @PostMapping  // Mapeia requisições HTTP POST para este metodo.
     public Fornecedor adicionarFornecedor(@RequestBody Fornecedor fornecedor) {
@@ -53,24 +53,24 @@ public class FornecedorController {
      */
     @PutMapping("/{id}")  // Mapeia requisições HTTP PUT com um ID na URL.
     public Fornecedor atualizarFornecedor(@PathVariable Integer id_fornecedor, @RequestBody Fornecedor fornecedorAtualizado) {
-        Optional<Fornecedor> fornecedorExistente = fornecedorService.buscarfornecedorPorId(id_fornecedor);  // Verifica se o produto existe.
+        Optional<Fornecedor> fornecedorExistente = fornecedorService.buscarfornecedorPorId(id_fornecedor);  // Verifica se o fonecedor existe.
         if (fornecedorExistente.isPresent()) {
-            Fornecedor fornecedor = fornecedorExistente.get();  // Se o produto existir, atualiza os valores.
+            Fornecedor fornecedor = fornecedorExistente.get();  // Se o fornecedor existir, atualiza os valores.
             fornecedor.setFor_nome(fornecedorAtualizado.getFor_nome());
             fornecedor.setCont_despesa(fornecedorAtualizado.getCont_despesa());
             fornecedor.setCod_fornecedor(fornecedorAtualizado.getCod_fornecedor());
-            return fornecedorService.salvarfornecedor(fornecedor);  // Salva o produto atualizado.
+            return fornecedorService.salvarfornecedor(fornecedor);  // Salva o fornecedor atualizado.
         }
-        return null;  // Retorna null se o produto não existir.
+        return null;  // Retorna null se o fornecedor não existir.
     }
 
     /**
-     * Endpoint DELETE para remover um produto pelo ID.
+     * Endpoint DELETE para remover um fornecedor pelo ID.
      *
-     * @param id_fornecedor ID do produto a ser removido.
+     * @param id_fornecedor ID do fornecedor a ser removido.
      */
     @DeleteMapping("/{id}")  // Mapeia requisições HTTP DELETE com um ID na URL.
     public void deletarFornecedor(@PathVariable Integer id_fornecedor) {
-        fornecedorService.deletarfornecedor(id_fornecedor);  // Remove o fornecedor pelo ID usando o serviço.
+        fornecedorService.deletarFornecedor(id_fornecedor);  // Remove o fornecedor pelo ID usando o serviço.
     }
 }
