@@ -1,6 +1,7 @@
 package com.ifrs.app_cpc06.domain.contrato;
 import jakarta.persistence.*;
 import lombok.*;
+import java.util.Date;
 
 @Table(name = "tbl_contrato")
 @Entity(name = "tbl_contrato")
@@ -17,4 +18,9 @@ public class Contrato {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     // Gera o valor do 'id' automaticamente, com base na estratégia de auto-incremento do banco.
     private int id_contrato;
+    private int num_parcelas;
+    private Date dt_inicio;
+    private Date dt_fim;
+    private float vlr_contrato;
+    private String ctto_contrato;
 }

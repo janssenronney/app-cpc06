@@ -10,7 +10,7 @@ public class MainController {
     // Mapeia a URL raiz (/) para a página index.html
     @GetMapping
     public String index() {
-        String index = "index";
+        String index = "index.html";
         return index; // Retorna o nome do arquivo HTML (sem a extensão)
     }
 }
