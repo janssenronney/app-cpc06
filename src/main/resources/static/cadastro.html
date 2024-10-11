@@ -229,18 +229,26 @@
     // Função assíncrona para adicionar um novo contrato ao sistema (envia dados ao back-end)
     async function adicionarContrato() {
         // Obtém os valores dos campos de input do formulário de contrato
-        const fornecedorId = document.getElementById('fornecedor-contrato').value;
-        const numParcelas = document.getElementById('numparcelas').value;
-        const dataInicio = document.getElementById('data-inicio').value;
-        const dataFim = document.getElementById('data-fim').value;
-        const valor = document.getElementById('valor').value;
-        const objeto = document.getElementById('objeto').value;
+        const id_fornecedor = document.getElementById('fornecedor-contrato').value;
+        const num_parcelas = document.getElementById('numparcelas').value;
+        const dt_inicio = document.getElementById('data-inicio').value;
+        const dt_fim = document.getElementById('data-fim').value;
+        const vlr_contrato = document.getElementById('valor').value;
+        const ctt0_objeto = document.getElementById('objeto').value;
+        const contrato = {
+            id_fornecedor: id_fornecedor,
+            num_parcelas: num_parcelas,
+            dt_inicio: dt_inicio,
+            dt_fim: dt_fim,
+            vlr_contrato: vlr_contrato,
+            ctt0_objeto: ctt0_objeto
+        }
 
         // Envia uma requisição POST para o back-end com os dados do contrato
-        await fetch('/api/contrato', {
+        await fetch('/contrato', {
             method: 'POST',  // Define o metodo HTTP como POST
             headers: { 'Content-Type': 'application/json' },  // Especifica o tipo de conteúdo como JSON
-            body: JSON.stringify({ fornecedorId, numParcelas, dataInicio, dataFim, valor, objeto })  // Converte os dados do contrato para JSON e envia no corpo da requisição
+            body: JSON.stringify(contrato)  // Converte os dados do contrato para JSON e envia no corpo da requisição
         });
 
         // Exibe uma mensagem de sucesso após o contrato ser adicionado

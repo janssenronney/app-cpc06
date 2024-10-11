@@ -22,5 +22,5 @@ public class Contrato {
     private Date dt_inicio;
     private Date dt_fim;
     private float vlr_contrato;
-    private String ctto_contrato;
+    private String ctto_objeto;
 }
