@@ -11,7 +11,6 @@ CREATE TABLE tbl_contrato (
     id_fornecedor INTEGER,
     num_parcelas INTEGER,
     dt_inicio DATE,
-    dt_fim DATE,
     vlr_contrato REAL,
     ctto_objeto VARCHAR(10)
 );
