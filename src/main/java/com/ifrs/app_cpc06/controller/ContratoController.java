@@ -19,11 +19,11 @@ public class ContratoController {
      */
     @GetMapping  // Mapeia requisições HTTP GET para este metodo
     public List<Contrato> listarContrato() {
-        return contratoService.listarcontrato();  // Chama o metodo listarProdutos() do serviço.
+        return contratoService.listarContrato();  // Chama o metodo listarProdutos() do serviço.
     }
 
     /**
-     * Endpoint GET para buscar um produto específico pelo ID.
+     * Endpoint GET para buscar um contrato específico pelo ID.
      *
      * @param id_contrato contrato a ser buscado.
      * @return Contrato encontrado (se existir) ou um Optional vazio.
@@ -41,7 +41,7 @@ public class ContratoController {
      */
     @PostMapping  // Mapeia requisições HTTP POST para este metodo.
     public Contrato adicionarContrato(@RequestBody Contrato contrato) {
-        return contratoService.salvarcontrato(contrato);  // Salva o novo contrato usando o serviço.
+        return contratoService.salvarContrato(contrato);  // Salva o novo contrato usando o serviço.
     }
 
     /**
@@ -62,7 +62,7 @@ public class ContratoController {
             contrato.setDt_inicio(contratoAtualizado.getDt_inicio());
             contrato.setDt_fim(contratoAtualizado.getDt_fim());
             contrato.setVlr_contrato(contratoAtualizado.getVlr_contrato());
-            return contratoService.salvarcontrato(contrato);  // Salva o fornecedor atualizado.
+            return contratoService.salvarContrato(contrato);  // Salva o fornecedor atualizado.
         }
         return null;  // Retorna null se o contrato não existir.
     }
@@ -74,6 +74,6 @@ public class ContratoController {
      */
     @DeleteMapping("/{id}")  // Mapeia requisições HTTP DELETE com um ID na URL.
     public void deletarContrato(@PathVariable Integer id_contrato) {
-        contratoService.deletarContrato(id_contrato);  // Remove o fornecedor pelo ID usando o serviço.
+        contratoService.deletarContrato(id_contrato);  // Remove o contrato pelo ID usando o serviço.
     }
 }

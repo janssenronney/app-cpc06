@@ -16,7 +16,7 @@ public class ContratoService {
     private ContratoRepository contratoRepository;
 
     // Metodo para listar todos os fornecedores
-    public List<Contrato> listarcontrato() {
+    public List<Contrato> listarContrato() {
         // Retorna a lista de todos os contrato usando o metodo findAll do repositório
         return contratoRepository.findAll();
     }

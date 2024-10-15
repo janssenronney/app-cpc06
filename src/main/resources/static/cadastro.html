@@ -146,10 +146,6 @@
             <input type="date" id="data-inicio">
         </div>
         <div class="input-group">
-            <label for="data-fim">Data de Fim:</label>
-            <input type="date" id="data-fim">
-        </div>
-        <div class="input-group">
             <label for="valor">Valor:</label>
             <input type="number" id="valor" placeholder="Valor do Contrato">
         </div>
@@ -207,6 +203,9 @@
         alert('Fornecedor adicionado com sucesso!');
     }
 
+    // Variável para armazenar o ID do fornecedor selecionado
+    let consultaId = null;
+
     // Função assíncrona que carrega a lista de fornecedores e a exibe no dropdown do contrato
     async function carregarFornecedores() {
         // Faz uma requisição GET para o back-end para buscar a lista de fornecedores cadastrados
@@ -224,22 +223,27 @@
             option.text = fornecedor.for_nome; // Define o texto da opção como o nome do fornecedor
             select.appendChild(option); // Adiciona a opção ao dropdown
         });
+
+        // Adiciona um evento para armazenar o ID do fornecedor selecionado na variável consultaId
+        select.addEventListener('change', function() {
+            consultaId = select.value; // Armazena o ID do fornecedor selecionado
+            console.log('ID do fornecedor selecionado:', consultaId); // Exibe o ID no console (opcional)
+        });
     }
+
 
     // Função assíncrona para adicionar um novo contrato ao sistema (envia dados ao back-end)
     async function adicionarContrato() {
         // Obtém os valores dos campos de input do formulário de contrato
-        const id_fornecedor = document.getElementById('fornecedor-contrato').value;
+        const id_fornecedor = consultaId;
         const num_parcelas = document.getElementById('numparcelas').value;
         const dt_inicio = document.getElementById('data-inicio').value;
-        const dt_fim = document.getElementById('data-fim').value;
         const vlr_contrato = document.getElementById('valor').value;
         const ctto_objeto = document.getElementById('objeto').value;
         const contrato = {
             id_fornecedor: id_fornecedor,
             num_parcelas: num_parcelas,
             dt_inicio: dt_inicio,
-            dt_fim: dt_fim,
             vlr_contrato: vlr_contrato,
             ctto_objeto: ctto_objeto
         }
