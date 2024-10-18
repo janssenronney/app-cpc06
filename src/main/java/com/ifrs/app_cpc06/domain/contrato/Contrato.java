@@ -15,12 +15,12 @@ import java.util.Date;
 // ou seja, será mapeada para uma tabela no banco de dados.
 public class Contrato {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     // Gera o valor do 'id' automaticamente, com base na estratégia de auto-incremento do banco.
     private int id_contrato;
     private int num_parcelas;
     private Date dt_inicio;
-    private Date dt_fim;
     private float vlr_contrato;
     private String ctto_objeto;
+    private float taxa_juros;
 }

@@ -1,10 +1,256 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta - Gestão de Contratos</title>
+    <style>
+        /* Estilos básicos da página */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        /* Estilo para o cabeçalho */
+        header {
+            background-color: #333;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        /* Estilo para o menu de navegação */
+        nav {
+            background-color: #444;
+            display: flex;
+            justify-content: space-between;
+            padding: 0;
+        }
+
+        /* Estilo para as listas de navegação (ul) */
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        /* Estilo para os itens da lista de navegação */
+        nav ul li {
+            margin: 0;
+        }
+
+        /* Estilo para os links de navegação */
+        nav ul li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+
+        /* Estilo para mudar a cor ao passar o mouse */
+        nav ul li a:hover {
+            background-color: #555;
+        }
+
+        /* Estilo do conteúdo principal da página */
+        main {
+            padding: 2rem;
+            text-align: center;
+        }
+
+        /* Estilo para o input de pesquisa */
+        .input-group {
+            margin: 20px 0;
+        }
+
+        label {
+            margin-right: 10px;
+        }
+
+        input[type="text"] {
+            padding: 8px;
+            width: 300px;
+        }
+
+        /* Estilo da árvore de consultas */
+        .tree-view {
+            margin: 20px auto;
+            text-align: left;
+            width: 80%;
+            max-width: 800px;
+        }
+
+        .tree-view ul {
+            list-style: none;
+            padding-left: 20px;
+        }
+
+        .tree-view li {
+            margin: 5px 0;
+        }
+
+        .tree-view label {
+            cursor: pointer;
+        }
+
+        .tree-view input[type="checkbox"] {
+            display: none;
+        }
+
+        .tree-view input[type="checkbox"]:checked + ul {
+            display: block;
+        }
+
+        .tree-view input[type="checkbox"] + ul {
+            display: none;
+        }
+
+        .tree-view input[type="checkbox"] + ul li {
+            padding-left: 20px;
+        }
+
+        /* Estilo para os botões */
+        .button {
+            padding: 10px 20px;
+            background-color: #444;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin: 10px;
+        }
+
+        .button:hover {
+            background-color: #555;
+        }
+    </style>
 </head>
 <body>
+<!-- Cabeçalho da página com o título -->
+<header>
+    <h1>Gestão de Contratos - Consulta</h1>
+</header>
 
+<!-- Menu de navegação horizontal com as opções "Consulta" e "Home" -->
+<nav>
+    <ul>
+        <li><a href="index.html">Home</a></li> <!-- Botão Home -->
+    </ul>
+</nav>
+
+<!-- Área principal onde o formulário de consulta e os resultados serão exibidos -->
+<main>
+    <h2>Consulta de Fornecedores</h2>
+
+    <!-- Formulário de pesquisa por nome do fornecedor -->
+    <div class="input-group">
+        <label for="nome-fornecedor-pesquisa">Nome do Fornecedor:</label>
+        <input type="text" id="nome-fornecedor-pesquisa" placeholder="Digite o nome do fornecedor">
+        <button class="button" onclick="buscarFornecedores()">Pesquisar</button>
+    </div>
+
+    <!-- Árvore de consulta para os resultados -->
+    <div id="resultado-consulta" class="tree-view"></div>
+</main>
+
+<script>
+    // Função para buscar fornecedores pelo nome no banco de dados
+    async function buscarFornecedores() {
+        const nomeFornecedor = document.getElementById('nome-fornecedor-pesquisa').value;
+
+        // Faz uma requisição GET para buscar os fornecedores pelo nome
+        const response = await fetch(`/fornecedor?nome=${nomeFornecedor}`);
+        const fornecedores = await response.json(); // Recebe a lista de fornecedores
+
+        // Limpa a área de resultados de consulta
+        const resultadoDiv = document.getElementById('resultado-consulta');
+        resultadoDiv.innerHTML = '';
+
+        if (fornecedores.length === 0) {
+            resultadoDiv.innerHTML = '<p>Nenhum fornecedor encontrado.</p>';
+            return;
+        }
+
+        // Monta a árvore de resultados de fornecedores
+        const ulFornecedores = document.createElement('ul');
+        fornecedores.forEach(fornecedor => {
+            const liFornecedor = document.createElement('li');
+            
+            // Cria um checkbox para abrir/fechar a lista de contratos
+            const checkboxFornecedor = document.createElement('input');
+            checkboxFornecedor.type = 'checkbox';
+            checkboxFornecedor.id = `fornecedor-${fornecedor.id_fornecedor}`;
+            
+            // Label do fornecedor com o nome
+            const labelFornecedor = document.createElement('label');
+            labelFornecedor.htmlFor = `fornecedor-${fornecedor.id_fornecedor}`;
+            labelFornecedor.textContent = fornecedor.for_nome;
+
+            // Adiciona o checkbox e label ao item da lista do fornecedor
+            liFornecedor.appendChild(checkboxFornecedor);
+            liFornecedor.appendChild(labelFornecedor);
+
+            // Adiciona a lista de contratos (inicialmente vazia)
+            const ulContratos = document.createElement('ul');
+            liFornecedor.appendChild(ulContratos);
+
+            // Função para carregar os contratos ao abrir a lista
+            checkboxFornecedor.addEventListener('change', async function () {
+                if (this.checked) {
+                    const response = await fetch(`/contrato?fornecedorId=${fornecedor.id_fornecedor}`);
+                    const contratos = await response.json();
+
+                    ulContratos.innerHTML = ''; // Limpa os contratos anteriores
+                    contratos.forEach(contrato => {
+                        const liContrato = document.createElement('li');
+                        
+                        // Cria um checkbox para abrir/fechar a lista de objetos
+                        const checkboxContrato = document.createElement('input');
+                        checkboxContrato.type = 'checkbox';
+                        checkboxContrato.id = `contrato-${contrato.id_contrato}`;
+                        
+                        // Label do contrato com o valor e a data de início
+                        const labelContrato = document.createElement('label');
+                        labelContrato.htmlFor = `contrato-${contrato.id_contrato}`;
+                        labelContrato.textContent = `Contrato ${contrato.id_contrato} - Valor: ${contrato.vlr_contrato}, Início: ${contrato.dt_inicio}`;
+
+                        // Adiciona o checkbox e label ao item da lista do contrato
+                        liContrato.appendChild(checkboxContrato);
+                        liContrato.appendChild(labelContrato);
+
+                        // Adiciona a lista de objetos (inicialmente vazia)
+                        const ulObjetos = document.createElement('ul');
+                        liContrato.appendChild(ulObjetos);
+
+                        // Função para carregar os objetos ao abrir a lista
+                        checkboxContrato.addEventListener('change', async function () {
+                            if (this.checked) {
+                                const response = await fetch(`/objetos?contratoId=${contrato.id_contrato}`);
+                                const objetos = await response.json();
+
+                                ulObjetos.innerHTML = ''; // Limpa os objetos anteriores
+                                objetos.forEach(objeto => {
+                                    const liObjeto = document.createElement('li');
+                                    liObjeto.textContent = `Objeto: ${objeto.ctto_objeto}`;
+                                    ulObjetos.appendChild(liObjeto);
+                                });
+                            }
+                        });
+
+                        ulContratos.appendChild(liContrato);
+                    });
+                }
+            });
+
+            ulFornecedores.appendChild(liFornecedor);
+        });
+
+        // Adiciona a lista de fornecedores à div de resultados
+        resultadoDiv.appendChild(ulFornecedores);
+    }
+</script>
 </body>
 </html>

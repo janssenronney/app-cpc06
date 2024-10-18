@@ -60,7 +60,6 @@ public class ContratoController {
             contrato.setCtto_objeto(contratoAtualizado.getCtto_objeto());
             contrato.setNum_parcelas(contratoAtualizado.getNum_parcelas());
             contrato.setDt_inicio(contratoAtualizado.getDt_inicio());
-            contrato.setDt_fim(contratoAtualizado.getDt_fim());
             contrato.setVlr_contrato(contratoAtualizado.getVlr_contrato());
             return contratoService.salvarContrato(contrato);  // Salva o fornecedor atualizado.
         }

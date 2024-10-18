@@ -1,18 +1,20 @@
+/* bd_cpc06_logico: */
+
 CREATE TABLE tbl_fornecedor (
     id_fornecedor INTEGER PRIMARY KEY,
-    cod_fornecedor VARCHAR(6) UNIQUE ,
-    for_nome VARCHAR(50) UNIQUE ,
+    cod_fornecedor VARCHAR(6),
+    forn_nome VARCHAR(50),
     cont_despesa INTEGER,
     UNIQUE (id_fornecedor, cod_fornecedor)
 );
 
 CREATE TABLE tbl_contrato (
     id_contrato INTEGER PRIMARY KEY UNIQUE,
-    id_fornecedor INTEGER,
+    id_n_fornecedor VARCHAR(60),
     num_parcelas INTEGER,
     dt_inicio DATE,
     vlr_contrato REAL,
-    ctto_objeto VARCHAR(10)
+    ctto_objeto VARCHAR(15)
 );
 
 CREATE TABLE tbl_calculo (
@@ -20,7 +22,8 @@ CREATE TABLE tbl_calculo (
     id_contrato INTEGER,
     num_parcelas INTEGER,
     vlr_presente REAL,
-    calc_depreciacao REAL
+    calc_depreciacao REAL,
+    calc_juros REAL
 );
 
 CREATE TABLE tbl_lancamento (
@@ -44,10 +47,6 @@ CREATE TABLE tbl_analise (
     praz_min BOOLEAN,
     trans_poss_oper BOOLEAN
 );
-
-ALTER TABLE tbl_contrato ADD CONSTRAINT FK_tbl_contrato_3
-    FOREIGN KEY (id_fornecedor)
-        REFERENCES tbl_fornecedor (id_fornecedor);
 
 ALTER TABLE tbl_calculo ADD CONSTRAINT FK_tbl_calculo_2
     FOREIGN KEY (id_contrato)
