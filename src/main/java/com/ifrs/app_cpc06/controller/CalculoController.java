@@ -58,7 +58,7 @@ public class CalculoController {
         Optional<Calculo> calculoExistente = calculoService.buscarCalculoPorId(id_calculo);
         if (calculoExistente.isPresent()) {
             Calculo calculo = calculoExistente.get();  // Se o fornecedor existir, atualiza os valores.
-            calculo.setVfContrato(calculoAtualizado.getVfContrato());
+            calculo.setVlr_contrato(calculoAtualizado.getVlr_contrato());
             calculo.setNum_parcelas(calculoAtualizado.getNum_parcelas());
             calculo.setTaxa_juros(calculoAtualizado.getTaxa_juros());
             calculo.setVlr_contrato(calculoAtualizado.getVlr_contrato());

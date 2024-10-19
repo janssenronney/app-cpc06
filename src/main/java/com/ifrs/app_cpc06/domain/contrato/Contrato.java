@@ -5,6 +5,7 @@ import java.util.Date;
 
 @Table(name = "tbl_contrato")
 @Entity(name = "tbl_contrato")
+@Inheritance(strategy = InheritanceType.JOINED)  // Cada subclasse terá sua própria tabela
 @EqualsAndHashCode( of = "id_contrato")
 @Getter
 @Setter
@@ -16,6 +17,7 @@ import java.util.Date;
 public class Contrato {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     // Gera o valor do 'id' automaticamente, com base na estratégia de auto-incremento do banco.
     private int id_contrato;
     private int num_parcelas;
