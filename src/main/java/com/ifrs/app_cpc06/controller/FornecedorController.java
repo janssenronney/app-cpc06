@@ -56,7 +56,7 @@ public class FornecedorController {
         Optional<Fornecedor> fornecedorExistente = fornecedorService.buscarfornecedorPorId(id_fornecedor);  // Verifica se o fonecedor existe.
         if (fornecedorExistente.isPresent()) {
             Fornecedor fornecedor = fornecedorExistente.get();  // Se o fornecedor existir, atualiza os valores.
-            fornecedor.setFor_nome(fornecedorAtualizado.getFor_nome());
+            fornecedor.setForn_nome(fornecedorAtualizado.getForn_nome());
             fornecedor.setCont_despesa(fornecedorAtualizado.getCont_despesa());
             fornecedor.setCod_fornecedor(fornecedorAtualizado.getCod_fornecedor());
             return fornecedorService.salvarfornecedor(fornecedor);  // Salva o fornecedor atualizado.
