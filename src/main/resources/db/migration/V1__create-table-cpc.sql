@@ -13,15 +13,10 @@ CREATE TABLE tbl_contrato (
     dt_inicio DATE,
     taxa_contrato REAL,
     vlr_contrato REAL,
-    ctto_objeto VARCHAR(10)
-);
-
-CREATE TABLE tbl_calculo (
-    id_calculo INTEGER PRIMARY KEY,
-    id_contrato INTEGER,
-    num_parcelas INTEGER,
+    ctto_objeto VARCHAR(10),
     vlr_presente REAL,
-    calc_depreciacao REAL
+    valor_depreciacao REAL,
+    valor_juros REAL
 );
 
 CREATE TABLE tbl_lancamento (
@@ -46,9 +41,6 @@ CREATE TABLE tbl_analise (
     trans_poss_oper BOOLEAN
 );
 
-ALTER TABLE tbl_calculo ADD CONSTRAINT FK_tbl_calculo_2
-    FOREIGN KEY (id_contrato)
-        REFERENCES tbl_contrato (id_contrato);
 
 ALTER TABLE tbl_lancamento ADD CONSTRAINT FK_tbl_lancamento_3
     FOREIGN KEY (id_fornecedor)

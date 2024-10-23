@@ -28,8 +28,8 @@ public class FornecedorController {
      * @param id_fonecedor fornecedor a ser buscado.
      * @return Produto encontrado (se existir) ou um Optional vazio.
      */
-    @GetMapping("/{id}")  // Mapeia requisições GET com um ID na URL (ex: /api/fornecedor/1).
-    public Optional<Fornecedor> buscarFornecedor(@PathVariable Integer id_fonecedor) {
+    @GetMapping("/{id_fornecedor}")  // Mapeia requisições GET com um ID na URL (ex: /api/fornecedor/1).
+    public Optional<Fornecedor> buscarFornecedor(@PathVariable("id_fornecedor") Integer id_fonecedor) {
         return fornecedorService.buscarfornecedorPorId(id_fonecedor);  // Busca o fornecedor pelo ID usando o serviço.
     }
 
@@ -51,8 +51,8 @@ public class FornecedorController {
      * @param fornecedorAtualizado Dados atualizados do produto.
      * @return Produto atualizado ou null se o produto não existir.
      */
-    @PutMapping("/{id}")  // Mapeia requisições HTTP PUT com um ID na URL.
-    public Fornecedor atualizarFornecedor(@PathVariable Integer id_fornecedor, @RequestBody Fornecedor fornecedorAtualizado) {
+    @PutMapping("/{id_fornecedor}")  // Mapeia requisições HTTP PUT com um ID na URL.
+    public Fornecedor atualizarFornecedor(@PathVariable("id_fornecedor") Integer id_fornecedor, @RequestBody Fornecedor fornecedorAtualizado) {
         Optional<Fornecedor> fornecedorExistente = fornecedorService.buscarfornecedorPorId(id_fornecedor);  // Verifica se o fonecedor existe.
         if (fornecedorExistente.isPresent()) {
             Fornecedor fornecedor = fornecedorExistente.get();  // Se o fornecedor existir, atualiza os valores.
@@ -69,8 +69,8 @@ public class FornecedorController {
      *
      * @param id_fornecedor ID do fornecedor a ser removido.
      */
-    @DeleteMapping("/{id}")  // Mapeia requisições HTTP DELETE com um ID na URL.
-    public void deletarFornecedor(@PathVariable Integer id_fornecedor) {
+    @DeleteMapping("/{id_fornecedor}")  // Mapeia requisições HTTP DELETE com um ID na URL.
+    public void deletarFornecedor(@PathVariable("id_fornecedor") Integer id_fornecedor) {
         fornecedorService.deletarFornecedor(id_fornecedor);  // Remove o fornecedor pelo ID usando o serviço.
     }
 }

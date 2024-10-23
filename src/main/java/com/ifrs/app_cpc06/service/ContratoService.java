@@ -29,6 +29,9 @@ public class ContratoService {
 
     // Metodo para salvar um novo fornecedor no banco de dados
     public Contrato salvarContrato(Contrato contrato) {
+        contrato.setVlr_presente(contrato.calculoValorPresente());
+        contrato.setValor_depreciacao(contrato.calculoValorDepreciacao());
+        contrato.setValor_juros(contrato.calculoValorJuros());
         // Salva o contrato e retorna a entidade salva (pode incluir o ID auto gerado)
         return contratoRepository.save(contrato);
     }

@@ -28,8 +28,8 @@ public class ContratoController {
      * @param id_contrato contrato a ser buscado.
      * @return Contrato encontrado (se existir) ou um Optional vazio.
      */
-    @GetMapping("/{id}")  // Mapeia requisições GET com um ID na URL (ex: /api/fornecedor/1).
-    public Optional<Contrato> buscarContrato(@PathVariable Integer id_contrato) {
+    @GetMapping("/{id_contrato}")  // Mapeia requisições GET com um ID na URL (ex: /api/fornecedor/1).
+    public Optional<Contrato> buscarContrato(@PathVariable("id_contrato") Integer id_contrato) {
         return contratoService.buscarContratoPorId(id_contrato);  // Busca o contrato pelo ID usando o serviço.
     }
 
@@ -51,8 +51,8 @@ public class ContratoController {
      * @param contratoAtualizado Dados atualizados do produto.
      * @return Produto atualizado ou null se o produto não existir.
      */
-    @PutMapping("/{id}")  // Mapeia requisições HTTP PUT com um ID na URL.
-    public Contrato atualizarContrato(@PathVariable Integer id_contrato, @RequestBody Contrato contratoAtualizado) {
+    @PutMapping("/{id_contrato}")  // Mapeia requisições HTTP PUT com um ID na URL.
+    public Contrato atualizarContrato(@PathVariable("id_contrato") Integer id_contrato, @RequestBody Contrato contratoAtualizado) {
         // Verifica se o contrato existe.
         Optional<Contrato> contratoExistente = contratoService.buscarContratoPorId(id_contrato);
         if (contratoExistente.isPresent()) {
@@ -72,8 +72,8 @@ public class ContratoController {
      *
      * @param id_contrato ID do contrato a ser removido.
      */
-    @DeleteMapping("/{id}")  // Mapeia requisições HTTP DELETE com um ID na URL.
-    public void deletarContrato(@PathVariable Integer id_contrato) {
+    @DeleteMapping("/{id_contrato}")  // Mapeia requisições HTTP DELETE com um ID na URL.
+    public void deletarContrato(@PathVariable("id_contrato") Integer id_contrato) {
         contratoService.deletarContrato(id_contrato);  // Remove o contrato pelo ID usando o serviço.
     }
 }
