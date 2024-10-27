@@ -2,13 +2,11 @@ package com.ifrs.app_cpc06.domain.contrato;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.Date;
 
 @Table(name = "tbl_contrato")
 @Entity(name = "tbl_contrato")
-@EqualsAndHashCode( of = "id_contrato")
+@EqualsAndHashCode( of = "id_controle")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -20,8 +18,10 @@ public class Contrato {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     // Gera o valor do 'id' automaticamente, com base na estratégia de auto-incremento do banco.
-    private int id_contrato;
+    private int id_controle;
+    private int cod_ctto;
     private int num_parcelas;
+    private String id_n_fornecedor;
     private Date dt_inicio;
     private float taxa_contrato;
     private float vlr_contrato;

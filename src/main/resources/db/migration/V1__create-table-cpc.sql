@@ -7,7 +7,8 @@ CREATE TABLE tbl_fornecedor (
 );
 
 CREATE TABLE tbl_contrato (
-    id_contrato INTEGER PRIMARY KEY UNIQUE,
+    id_controle INTEGER PRIMARY KEY UNIQUE,
+    cod_ctto INTEGER,
     id_n_fornecedor VARCHAR(60),
     num_parcelas INTEGER,
     dt_inicio DATE,
@@ -22,7 +23,7 @@ CREATE TABLE tbl_contrato (
 CREATE TABLE tbl_lancamento (
     id_lancamento INTEGER PRIMARY KEY UNIQUE,
     id_fornecedor INTEGER,
-    id_contrato INTEGER,
+    id_controle INTEGER,
     lnc_valorpres REAL,
     lnc_cc INTEGER,
     lnc_juros REAL,
@@ -47,8 +48,8 @@ ALTER TABLE tbl_lancamento ADD CONSTRAINT FK_tbl_lancamento_3
         REFERENCES tbl_fornecedor (id_fornecedor);
 
 ALTER TABLE tbl_lancamento ADD CONSTRAINT FK_tbl_lancamento_4
-    FOREIGN KEY (id_contrato)
-        REFERENCES tbl_contrato (id_contrato);
+    FOREIGN KEY (id_controle)
+        REFERENCES tbl_contrato (id_controle);
 
 ALTER TABLE tbl_analise ADD CONSTRAINT FK_tbl_analise_3
     FOREIGN KEY (id_fornecedor)

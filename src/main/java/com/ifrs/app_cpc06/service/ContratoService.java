@@ -3,6 +3,8 @@ import com.ifrs.app_cpc06.domain.contrato.Contrato;
 import com.ifrs.app_cpc06.domain.contrato.ContratoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,24 +24,43 @@ public class ContratoService {
     }
 
     // Metodo para buscar um fornecedor pelo ID
-    public Optional<Contrato> buscarContratoPorId(Integer id_contrato) {
+    public Optional<Contrato> buscarContratoPorId(Integer id_controle) {
         // Retorna um objeto Optional contendo o contrato se encontrado, ou vazio se não
-        return contratoRepository.findById(id_contrato);
+        return contratoRepository.findById(id_controle);
     }
 
-    // Metodo para salvar um novo fornecedor no banco de dados
-    public Contrato salvarContrato(Contrato contrato) {
-        contrato.setVlr_presente(contrato.calculoValorPresente());
-        contrato.setValor_depreciacao(contrato.calculoValorDepreciacao());
-        contrato.setValor_juros(contrato.calculoValorJuros());
-        // Salva o contrato e retorna a entidade salva (pode incluir o ID auto gerado)
-        return contratoRepository.save(contrato);
+    // Metodo para salvar um novo fornecedor no banco de dado's
+    public List<Contrato> salvarContrato(Contrato contrato) {
+        int j = contrato.getNum_parcelas();
+        int i = 0;
+        List<Contrato> contratosSalvos = new ArrayList<>(); // lista para armazenar instâncias salvas
+
+        while (i < j) {
+            Contrato novoContrato = new Contrato();
+            novoContrato.setCod_ctto(contrato.getCod_ctto());
+            novoContrato.setId_n_fornecedor(contrato.getId_n_fornecedor());
+            novoContrato.setVlr_presente(contrato.calculoValorPresente());
+            novoContrato.setValor_depreciacao(contrato.calculoValorDepreciacao());
+            novoContrato.setValor_juros(contrato.calculoValorJuros());
+            novoContrato.setTaxa_contrato(contrato.getTaxa_contrato());
+            novoContrato.setNum_parcelas(i+1);
+            novoContrato.setDt_inicio(contrato.getDt_inicio());
+            novoContrato.setCtto_objeto(contrato.getCtto_objeto());
+            novoContrato.setVlr_contrato(contrato.getVlr_contrato());
+            //novoContrato.setId_contrato(contrato.getId_contrato());
+
+            // Salva e adiciona à lista
+            contratosSalvos.add(contratoRepository.save(novoContrato));
+            i++;
+        }
+
+        return contratosSalvos; // Retorna todas as instâncias salvas
     }
 
     // Metodo para deletar um contrato pelo ID
-    public void deletarContrato(Integer id_contrato) {
+    public void deletarContrato(Integer id_controle) {
         // Deleta o contrato usando o metodo deleteById do repositorio
-        contratoRepository.deleteById(id_contrato);
+        contratoRepository.deleteById(id_controle);
     }
 }
 
