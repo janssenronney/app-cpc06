@@ -30,14 +30,15 @@ public class Contrato {
     private float valor_depreciacao;
     private float valor_juros;
 
+
     public float calculoValorPresente() {
         if (getTaxa_contrato() < 0 || getNum_parcelas() <= 0) {
             throw new IllegalArgumentException("Parâmetros inválidos.");
         }
 
         // Cálculo do valor presente usando a fórmula de valor presente para fluxo de caixa
-        float calc_presente = (float) (getVlr_contrato() / Math.pow(1 + (getTaxa_contrato()/100), getNum_parcelas()));
-
+        //float calc_presente = (float) (getVlr_contrato()/(Math.pow(1 + (Math.pow(((getTaxa_contrato()/100)+1),(1/12))-1), getNum_parcelas())));
+        float calc_presente = (float) (getVlr_contrato()/(Math.pow(1 + (Math.pow(((getTaxa_contrato()/100)+1),(1.0/12))-1), getNum_parcelas())));
         setVlr_presente(calc_presente);
         return (calc_presente);
     }

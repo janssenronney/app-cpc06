@@ -34,6 +34,7 @@ public class ContratoService {
         int j = contrato.getNum_parcelas();
         int i = 0;
         List<Contrato> contratosSalvos = new ArrayList<>(); // lista para armazenar instâncias salvas
+        int ultimo_contrato;
 
         while (i < j) {
             Contrato novoContrato = new Contrato();

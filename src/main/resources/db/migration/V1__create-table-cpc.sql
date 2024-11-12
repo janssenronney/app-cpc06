@@ -9,7 +9,7 @@ CREATE TABLE tbl_fornecedor (
 CREATE TABLE tbl_contrato (
     id_controle INTEGER PRIMARY KEY UNIQUE,
     cod_ctto INTEGER,
-    id_n_fornecedor VARCHAR(60),
+    id_n_fornecedor VARCHAR(30),
     num_parcelas INTEGER,
     dt_inicio DATE,
     taxa_contrato REAL,

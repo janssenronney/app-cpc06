@@ -168,6 +168,7 @@
 </main>
 
 <script>
+    let ultimo_contrato = 0;
     // Função que exibe o formulário de acordo com a opção selecionada (Fornecedor ou Contrato)
     function exibirFormulario(formulario) {
         const formFornecedor = document.getElementById('formulario-fornecedor');
@@ -211,15 +212,15 @@
             option.value = fornecedor.id_fornecedor;
             option.text = `${fornecedor.id_fornecedor} - ${fornecedor.forn_nome}`;
             select.appendChild(option);
+
         });
     }
-
-    let ultimo_contrato = 0;
-
     async function adicionarContrato() {
+
+        console.log(document.getElementById('fornecedor-contrato').value);
+
         ultimo_contrato += 1;
-        const select = document.getElementById('fornecedor-contrato').value; // Seleciona o dropdown
-        const id_n_fornecedor = select.options[select.selectedIndex].value; // Obtém o valor selecionado
+        const id_n_fornecedor = document.getElementById('fornecedor-contrato').value;
         const num_parcelas = document.getElementById('numparcelas').value;
         const dt_inicio = document.getElementById('data-inicio').value;
         const taxa_contrato = document.getElementById('taxa-contrato').value;
@@ -237,18 +238,21 @@
         };
 
         await fetch('/contrato', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(contrato)
+            method: 'POST',  // Define o metodo HTTP como POST
+            headers: { 'Content-Type': 'application/json' },  // Especifica o tipo de conteúdo como JSON
+            body: JSON.stringify(contrato)  // Converte os dados do contrato para JSON e envia no corpo da requisição
         });
 
         alert('Contrato adicionado com sucesso!');
+
+        // Limpar os campos do formulário
         document.getElementById('numparcelas').value = '';
         document.getElementById('data-inicio').value = '';
         document.getElementById('taxa-contrato').value = '';
         document.getElementById('valor').value = '';
         document.getElementById('objeto').value = '';
         document.getElementById('fornecedor-contrato').selectedIndex = 0;
+
     }
 </script>
 </body>

@@ -18,6 +18,6 @@ public class Fornecedor {
     // Gera o valor do 'id' automaticamente, com base na estratégia de auto-incremento do banco.
     private int id_fornecedor;
     private String forn_nome;
-    private Integer cont_despesa;
+    private int cont_despesa;
     private String cod_fornecedor;
 }
