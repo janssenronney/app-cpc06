@@ -1,4 +1,5 @@
 package com.ifrs.app_cpc06.domain.contrato;
+import com.ifrs.app_cpc06.service.ContratoService;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,6 +30,7 @@ public class Contrato {
     private float vlr_presente;
     private float valor_depreciacao;
     private float valor_juros;
+    private float saldo_contrato;
 
 
     public float calculoValorPresente() {
@@ -36,21 +38,31 @@ public class Contrato {
             throw new IllegalArgumentException("Parâmetros inválidos.");
         }
 
-        // Cálculo do valor presente usando a fórmula de valor presente para fluxo de caixa
-        //float calc_presente = (float) (getVlr_contrato()/(Math.pow(1 + (Math.pow(((getTaxa_contrato()/100)+1),(1/12))-1), getNum_parcelas())));
-        float calc_presente = (float) (getVlr_contrato()/(Math.pow(1 + (Math.pow(((getTaxa_contrato()/100)+1),(1.0/12))-1), getNum_parcelas())));
-        setVlr_presente(calc_presente);
-        return (calc_presente);
+        float calc_presente = 0; // inicialização da variável de valor presente
+
+        // Loop para iterar sobre cada parcela
+        for (int i = 1; i <= getNum_parcelas(); i++) {
+            float vlr_parcela = getVlr_contrato()/getNum_parcelas();
+            // Cálculo do valor presente usando a fórmula
+            calc_presente += (float) (vlr_parcela / (Math.pow(1 + (Math.pow(((getTaxa_contrato() / 100) + 1), (1.0 / 12)) - 1), i)));
+        }
+
+        setVlr_presente(calc_presente); // Configura o valor presente calculado
+        return calc_presente; // Retorna o valor presente total
     }
 
-    public float calculoValorJuros() {
-        if (getTaxa_contrato() < 0 || getNum_parcelas() <= 0) {
-            throw new IllegalArgumentException("Parametros Invalidos");
-        }
-        float calc_juros = calculoValorPresente()*getTaxa_contrato()/100;
-        setValor_juros(calc_juros);
-        return (calc_juros);
+    public float saldoContrato(int i) {
+
+        float saldo = i == 1? getVlr_presente(): getSaldo_contrato(); // Inicializa com o valor presente
+        float valorParcela = -getVlr_contrato()/getNum_parcelas(); // Valor da parcela
+        double calc_juros = saldo * (Math.pow((getTaxa_contrato() / 100) + 1, 1.0 / 12) - 1);
+        saldo += (float) (calc_juros + valorParcela); // Atualiza o saldo
+        setValor_juros((float) calc_juros);
+        setSaldo_contrato(saldo); // Atualiza o saldo no contrato
+        return saldo;
     }
+
+
     public float calculoValorDepreciacao() {
         if (getTaxa_contrato() < 0 || getNum_parcelas() <= 0) {
             throw new IllegalArgumentException("Parametros Invalidos");

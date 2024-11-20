@@ -1,10 +1,165 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta de Contratos - Gestão de Contratos</title>
+    <style>
+        /* Estilos básicos */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+        nav {
+            background-color: #444;
+            overflow: hidden;
+        }
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+        nav ul li {
+            float: left;
+        }
+        nav ul li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+        nav ul li a:hover {
+            background-color: #555;
+        }
+        main {
+            padding: 2rem;
+            text-align: center;
+        }
+        table {
+            width: 80%;
+            margin: 2rem auto;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 1rem;
+            text-align: left;
+        }
+        th {
+            background-color: #333;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
 </head>
 <body>
+<!-- Cabeçalho da página -->
+<header>
+    <h1>Consulta de Contratos</h1>
+</header>
 
+<!-- Menu de navegação horizontal -->
+<nav>
+    <ul>
+        <li><a href="index.html">Página Inicial</a></li>
+        <li><a href="cadastro.html">Cadastro</a></li>
+        <li><a href="consulta.html">Consulta</a></li>
+    </ul>
+</nav>
+
+<!-- Corpo da página -->
+<main>
+    <h2>Buscar Contratos por Fornecedor</h2>
+    <form id="form-consulta">
+        <label for="nomeFornecedor">Nome do Fornecedor:</label>
+        <input type="text" id="nomeFornecedor" name="nomeFornecedor" placeholder="Digite o nome do fornecedor">
+        <button type="button" onclick="buscarContratos()">Buscar</button>
+    </form>
+    <div id="resultado" class="hidden">
+        <h3>Resultados:</h3>
+        <table id="tabela-contratos">
+            <thead>
+            <tr>
+                <th>Código do Contrato</th>
+                <th>Objeto do Contrato</th>
+                <th>Valor do Contrato</th>
+                <th>Número de Parcelas</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Resultados da busca serão inseridos aqui -->
+            </tbody>
+        </table>
+    </div>
+</main>
+
+<script>
+    async function buscarContratos() {
+        const nomeFornecedor = document.getElementById('nomeFornecedor').value.trim();
+        const resultadoDiv = document.getElementById('resultado');
+        const tabelaContratos = document.getElementById('tabela-contratos').querySelector('tbody');
+
+        // Limpa resultados anteriores
+        tabelaContratos.innerHTML = '';
+        resultadoDiv.classList.add('hidden');
+
+        if (!nomeFornecedor) {
+            alert("Por favor, insira o nome do fornecedor.");
+            return;
+        }
+
+        try {
+            // Faz a requisição para buscar os contratos
+            const response = await fetch(`/contrato?fornecedor=${encodeURIComponent(nomeFornecedor)}`);
+            if (!response.ok) {
+                throw new Error("Erro ao buscar contratos.");
+            }
+
+            const contratos = await response.json();
+
+            if (contratos.length === 0) {
+                alert("Nenhum contrato encontrado para este fornecedor.");
+                return;
+            }
+
+            // Popula a tabela com os resultados
+            contratos.forEach(contrato => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${contrato.cod_ctto}</td>
+                    <td>${contrato.ctto_objeto}</td>
+                    <td>R$ ${contrato.vlr_contrato.toFixed(2)}</td>
+                    <td>${contrato.num_parcelas}</td>
+                `;
+                tabelaContratos.appendChild(row);
+            });
+
+            // Mostra os resultados
+            resultadoDiv.classList.remove('hidden');
+        } catch (error) {
+            alert("Erro ao buscar contratos. Por favor, tente novamente.");
+            console.error(error);
+        }
+    }
+</script>
 </body>
 </html>

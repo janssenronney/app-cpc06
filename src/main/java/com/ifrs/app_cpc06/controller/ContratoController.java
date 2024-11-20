@@ -51,21 +51,6 @@ public class ContratoController {
      * @param contratoAtualizado Dados atualizados do contrato.
      * @return contrato atualizado ou null se contrato não existir.
      */
-    @PutMapping("/{id_controle}")
-    public Contrato atualizarContrato(@PathVariable("id_controle") Integer id_controle, @RequestBody Contrato contratoAtualizado) {
-        Optional<Contrato> contratoExistente = contratoService.buscarContratoPorId(id_controle);
-        if (contratoExistente.isPresent()) {
-            Contrato contrato = contratoExistente.get();
-            contrato.setCtto_objeto(contratoAtualizado.getCtto_objeto());
-            contrato.setNum_parcelas(contratoAtualizado.getNum_parcelas());
-            contrato.setDt_inicio(contratoAtualizado.getDt_inicio());
-            contrato.setTaxa_contrato(contratoAtualizado.getTaxa_contrato());
-            contrato.setVlr_contrato(contratoAtualizado.getVlr_contrato());
-            return contratoService.salvarContrato(contrato).get(0);  // Retorna o primeiro contrato da lista salva.
-        }
-        return null;
-    }
-
     /**
      * Endpoint DELETE para remover um contrato pelo ID.
      *

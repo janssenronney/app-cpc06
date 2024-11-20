@@ -42,13 +42,15 @@ public class ContratoService {
             novoContrato.setId_n_fornecedor(contrato.getId_n_fornecedor());
             novoContrato.setVlr_presente(contrato.calculoValorPresente());
             novoContrato.setValor_depreciacao(contrato.calculoValorDepreciacao());
-            novoContrato.setValor_juros(contrato.calculoValorJuros());
-            novoContrato.setTaxa_contrato(contrato.getTaxa_contrato());
+            float saldo = i == 0? contrato.getVlr_presente() : contrato.saldoContrato(i); // Calcula o saldo uma vez
+            novoContrato.setSaldo_contrato(saldo); // Define o saldo no novo contrato
+            novoContrato.setValor_juros((float) (saldo * (Math.pow((contrato.getTaxa_contrato()/100)+1, 1.0 / 12) - 1))); // Calcula os jurosnovoContrato.setTaxa_contrato(contrato.getTaxa_contrato());
             novoContrato.setNum_parcelas(i+1);
+            novoContrato.setTaxa_contrato(contrato.getTaxa_contrato());
             novoContrato.setDt_inicio(contrato.getDt_inicio());
             novoContrato.setCtto_objeto(contrato.getCtto_objeto());
             novoContrato.setVlr_contrato(contrato.getVlr_contrato());
-            //novoContrato.setId_contrato(contrato.getId_contrato());
+
 
             // Salva e adiciona à lista
             contratosSalvos.add(contratoRepository.save(novoContrato));
