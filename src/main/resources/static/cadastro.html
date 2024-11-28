@@ -142,6 +142,10 @@
             <input type="number" id="numparcelas" placeholder="Número de Parcelas">
         </div>
         <div class="input-group">
+            <label for="centro-custos">Centro de Custos:</label>
+            <input type="number" id="centro-custos" placeholder="Centro de Custos">
+        </div>
+        <div class="input-group">
             <label for="data-inicio">Data de Início:</label>
             <input type="date" id="data-inicio">
         </div>
@@ -218,6 +222,8 @@
     async function adicionarContrato() {
 
         console.log(document.getElementById('fornecedor-contrato').value);
+        console.log(document.getElementById('centro-custos').value);
+
 
         ultimo_contrato += 1;
         const id_n_fornecedor = document.getElementById('fornecedor-contrato').value;
@@ -225,6 +231,7 @@
         const dt_inicio = document.getElementById('data-inicio').value;
         const taxa_contrato = document.getElementById('taxa-contrato').value;
         const vlr_contrato = document.getElementById('valor').value;
+        const cc_contrato = document.getElementById('centro-custos').value;
         const ctto_objeto = document.getElementById('objeto').value;
 
         const contrato = {
@@ -233,15 +240,19 @@
             num_parcelas: num_parcelas,
             dt_inicio: dt_inicio,
             taxa_contrato: taxa_contrato,
+            cc_contrato: cc_contrato,
             vlr_contrato: vlr_contrato,
             ctto_objeto: ctto_objeto
         };
+
+
 
         await fetch('/contrato', {
             method: 'POST',  // Define o metodo HTTP como POST
             headers: { 'Content-Type': 'application/json' },  // Especifica o tipo de conteúdo como JSON
             body: JSON.stringify(contrato)  // Converte os dados do contrato para JSON e envia no corpo da requisição
         });
+        // Chamar a procedure AtualizarLancamento após adicionar o contrato
 
         alert('Contrato adicionado com sucesso!');
 
@@ -251,9 +262,11 @@
         document.getElementById('taxa-contrato').value = '';
         document.getElementById('valor').value = '';
         document.getElementById('objeto').value = '';
+        document.getElementById('centrocusto').value = '';
         document.getElementById('fornecedor-contrato').selectedIndex = 0;
 
     }
+
 </script>
 </body>
 </html>

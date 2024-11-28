@@ -22,6 +22,9 @@ public class ContratoService {
         // Retorna a lista de todos os contrato usando o metodo findAll do repositório
         return contratoRepository.findAll();
     }
+    public List<Contrato> buscarContratosPorFornecedor(String id_n_fornecedor) {
+        return contratoRepository.findById_n_fornecedor(id_n_fornecedor);
+    }
 
     // Metodo para buscar um fornecedor pelo ID
     public Optional<Contrato> buscarContratoPorId(Integer id_controle) {
@@ -47,6 +50,7 @@ public class ContratoService {
             novoContrato.setValor_juros((float) (saldo * (Math.pow((contrato.getTaxa_contrato()/100)+1, 1.0 / 12) - 1))); // Calcula os jurosnovoContrato.setTaxa_contrato(contrato.getTaxa_contrato());
             novoContrato.setNum_parcelas(i+1);
             novoContrato.setTaxa_contrato(contrato.getTaxa_contrato());
+            novoContrato.setCc_contrato(contrato.getCc_contrato());
             novoContrato.setDt_inicio(contrato.getDt_inicio());
             novoContrato.setCtto_objeto(contrato.getCtto_objeto());
             novoContrato.setVlr_contrato(contrato.getVlr_contrato());

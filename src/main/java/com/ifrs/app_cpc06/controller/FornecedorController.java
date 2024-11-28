@@ -28,10 +28,11 @@ public class FornecedorController {
      * @param id_fonecedor fornecedor a ser buscado.
      * @return Produto encontrado (se existir) ou um Optional vazio.
      */
-    @GetMapping("/{id_fornecedor}")  // Mapeia requisições GET com um ID na URL (ex: /api/fornecedor/1).
-    public Optional<Fornecedor> buscarFornecedor(@PathVariable("id_fornecedor") Integer id_fonecedor) {
-        return fornecedorService.buscarfornecedorPorId(id_fonecedor);  // Busca o fornecedor pelo ID usando o serviço.
+    @GetMapping("/fornecedores/{id_fornecedor}")  // Mapeia requisições GET com um ID na URL (ex: /api/fornecedor/1).
+    public List<Fornecedor> listarFornecedores(@PathVariable("id_fornecedor") Integer id_fonecedor) {
+        return fornecedorService.listarFornecedores(id_fonecedor);  // Busca o fornecedor pelo ID usando o serviço.
     }
+
 
     /**
      * Endpoint POST para adicionar um novo fornecedo.

@@ -32,6 +32,10 @@ public class ContratoController {
     public Optional<Contrato> buscarContrato(@PathVariable("id_controle") Integer id_controle) {
         return contratoService.buscarContratoPorId(id_controle);  // Busca o contrato pelo ID usando o serviço.
     }
+    @GetMapping("/fornecedores/{id_n_fornecedor}")
+    public List<Contrato> listarContratosPorFornecedor(@PathVariable("id_n_fornecedor") String id_n_fornecedor) {
+        return contratoService.buscarContratosPorFornecedor(id_n_fornecedor);
+    }
 
     /**
      * Endpoint POST para adicionar um novo fornecedo.
@@ -44,7 +48,7 @@ public class ContratoController {
         return contratoService.salvarContrato(contrato);  // Salva e retorna a lista de contratos.
     }
 
-    /**
+    /*
      * Endpoint PUT para atualizar um contrato existente.
      *
      * @param id_controle ID do contrato a ser atualizado.

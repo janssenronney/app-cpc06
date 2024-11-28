@@ -1,5 +1,5 @@
 package com.ifrs.app_cpc06.domain.contrato;
-import com.ifrs.app_cpc06.service.ContratoService;
+import com.ifrs.app_cpc06.domain.fornecedor.Fornecedor;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,6 +25,7 @@ public class Contrato {
     private String id_n_fornecedor;
     private Date dt_inicio;
     private float taxa_contrato;
+    private int cc_contrato;
     private float vlr_contrato;
     private String ctto_objeto;
     private float vlr_presente;

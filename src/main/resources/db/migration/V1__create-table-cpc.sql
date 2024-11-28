@@ -15,6 +15,7 @@ CREATE TABLE tbl_contrato (
     taxa_contrato REAL,
     vlr_contrato REAL,
     ctto_objeto VARCHAR(10),
+    cc_contrato INTEGER,
     vlr_presente REAL,
     valor_depreciacao REAL,
     valor_juros REAL
