@@ -1,10 +1,365 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta de Contratos - Gestão de Contratos</title>
+    <style>
+        /* Estilos básicos */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+        nav {
+            background-color: #444;
+            overflow: hidden;
+        }
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+        nav ul li {
+            float: left;
+        }
+        nav ul li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+        nav ul li a:hover {
+            background-color: #555;
+        }
+        main {
+            padding: 2rem;
+            text-align: center;
+        }
+        table {
+            width: 80%;
+            margin: 2rem auto;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 1rem;
+            text-align: left;
+        }
+        th {
+            background-color: #333;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .hidden {
+            display: none;
+        }
+        /* Estilo para os botões */
+        .button {
+            padding: 10px 20px;
+            background-color: #444;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin: 10px;
+        }
+
+        .button:hover {
+            background-color: #555;
+        }
+    </style>
 </head>
 <body>
+<!-- Cabeçalho da página -->
+<header>
+    <h1>Consulta de Contratos</h1>
+</header>
 
+<!-- Menu de navegação horizontal -->
+<nav>
+    <ul>
+        <li><a href="index.html">Página Inicial</a></li>
+        <li><a href="cadastro.html">Cadastro</a></li>
+        <li><a href="consulta.html">Consulta</a></li>
+    </ul>
+</nav>
+
+<!-- Corpo da página -->
+<main>
+    <h2>Selecionar Fornecedor</h2>
+    <!-- Dropdown para selecionar um fornecedor já cadastrado -->
+    <div class="input-group">
+        <label for="fornecedor-contrato">Fornecedor:</label>
+        <select id="fornecedor-contrato"></select>
+    </div>
+    <div class="input-group">
+       <!-- Opções serão carregadas dinamicamente -->
+        <button class="button"  onclick="buscarContratos()">Buscar</button>
+    </div>
+    <div id="resultado" class="hidden">
+        <h3>Resultados:</h3>
+        <table id="tabela-contratos">
+            <thead>
+            <tr>
+                <th>Código do Contrato</th>
+                <th>Objeto do Contrato</th>
+                <th>Centro de Custos</th>
+                <th>Valor do Contrato</th>
+                <th>Valor do Depreciação</th>
+                <th>Valor do Juros</th>
+                <th>Número de Parcelas</th>
+                <th>Data de Lançamento</th>
+                <th>Ações</th> <!-- Nova coluna para o botão -->
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Resultados da busca serão inseridos aqui -->
+            </tbody>
+        </table>
+    </div>
+</main>
+
+<script>
+    let contratosGlobal = []; // Array para armazenar os contratos buscados
+    let fornecedorGlobal = [];
+    let fornecedorAtual = null; // Variável global para armazenar o fornecedor selecionado
+
+    carregarFornecedores();
+    async function carregarFornecedores() {
+        const response = await fetch('/fornecedor');
+        const fornecedores = await response.json();
+        const select = document.getElementById('fornecedor-contrato');
+        select.innerHTML = '';
+
+        fornecedores.forEach(fornecedor => {
+            const option = document.createElement('option');
+            option.value = fornecedor.id_fornecedor; // ID do fornecedor
+            option.text = `${fornecedor.id_fornecedor} - ${fornecedor.forn_nome}`;
+            select.appendChild(option);
+        });
+
+        // Atualize a variável global quando o fornecedor for alterado
+        select.addEventListener('change', () => {
+            const fornecedorId = select.value;
+            fornecedorAtual = fornecedores.find(f => f.id_fornecedor == fornecedorId);
+            console.log("Fornecedor selecionado:", fornecedorAtual);
+        });
+    }
+
+    async function buscarContratos() {
+        const fornecedorId = document.getElementById('fornecedor-contrato').value;
+        const resultadoDiv = document.getElementById('resultado');
+        const tabelaContratos = document.getElementById('tabela-contratos').querySelector('tbody');
+
+        tabelaContratos.innerHTML = '';
+        resultadoDiv.classList.add('hidden');
+        contratosGlobal = []; // Limpa o array de contratos
+        fornecedorGlobal = [];
+
+        if (!fornecedorId) {
+            alert("Por favor, selecione um fornecedor.");
+            return;
+        }
+
+        try {
+            const response = await fetch(`/contrato/fornecedores/${encodeURIComponent(fornecedorId)}`);
+            const responseFornecedor = await fetch(`/fornecedor/fornecedores/${encodeURIComponent(fornecedorId)}`);
+            if (!response.ok) {
+                throw new Error("Erro ao buscar contratos.");
+            }
+
+            const contratos = await response.json();
+            const fornecedores = await responseFornecedor.json();
+            if (contratos.length === 0) {
+                alert("Nenhum contrato encontrado para este fornecedor.");
+                return;
+            }
+
+            contratosGlobal = contratos; // Salva os contratos no array global
+            fornecedorGlobal = fornecedores;
+            console.log(fornecedores)
+
+            fornecedores.forEach(fornecedor => {
+                console.log(fornecedor)
+                const dados = document.createElement('tr');
+                /*dados.innerHTML = `
+                <td>${fornecedor.id_fornecedor}</td>
+                <td>${fornecedor.cont_despesa}</td>
+                <td>${fornecedor.cod_fornecedor}</td>
+            `;*/
+                tabelaContratos.appendChild(dados);
+            });
+            contratos.forEach(contrato => {
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                <td>${contrato.cod_ctto}</td>
+                <td>${contrato.ctto_objeto}</td>
+                <td>${contrato.cc_contrato}</td>
+                <td>R$ ${contrato.vlr_contrato.toFixed(2)}</td>
+                <td>R$ ${contrato.valor_depreciacao.toFixed(2)}</td>
+                <td>R$ ${contrato.valor_juros.toFixed(2)}</td>
+                <td>${contrato.num_parcelas}</td>
+                <td><input
+                        type="date"
+                        value=""
+                        onchange="atualizarDataDigitada(${contrato.cod_ctto}, this.value)"
+                    /></td>
+                <td>
+                    <button type="button" onclick="gerarLancamento(${contrato.cod_ctto}, this)">Ação</button>
+                </td>
+                `;
+                tabelaContratos.appendChild(row);
+            });
+
+            resultadoDiv.classList.remove('hidden');
+        } catch (error) {
+            alert("Erro ao buscar contratos. Por favor, tente novamente.");
+            console.error(error);
+        }
+    }
+
+    function atualizarDataDigitada(codCtto, data) {
+        const contrato = contratosGlobal.find(ct => ct.cod_ctto === codCtto);
+        if (contrato) {
+            contrato.data_inicio = data; // Atualiza a data de início no contrato correspondente
+            console.log(`Data de início atualizada para o contrato ${codCtto}: ${data}`);
+        }
+    }
+
+    async function gerarLancamento(codCtto, buttonElement) {
+        // Encontra o contrato correspondente no array global
+        const contrato = contratosGlobal.find(ct => ct.cod_ctto === codCtto);
+        if (!contrato) {
+            alert("Contrato não encontrado.");
+            return;
+        }
+
+        if (!fornecedorAtual) {
+            alert("Fornecedor não selecionado corretamente.");
+            return;
+        }
+
+        // Obtém a linha correspondente ao botão clicado
+        const row = buttonElement.closest('tr');
+        const dataInput = row.querySelector('input[type="date"]');
+        const dataDigitada = dataInput.value;
+
+        if (!dataDigitada) {
+            alert("Por favor, preencha a data de início antes de gerar o lançamento.");
+            return;
+        }
+
+        // Criação do JSON de lançamento
+        let lancamento = {
+            id_fornecedor: fornecedorAtual.id_fornecedor,
+            cod_fornecedor: fornecedorAtual.cod_fornecedor,
+            cont_despesa: fornecedorAtual.cont_despesa,
+            id_controle: contrato.cod_ctto,
+            lnc_cc: contrato.cc_contrato,
+            lnc_juros: contrato.valor_juros,
+            lnc_depreciacao: contrato.valor_depreciacao,
+            vlr_despesa: contrato.vlr_contrato,
+            numeroParcelas: contrato.num_parcelas,
+            dt_lancamento: dataDigitada
+        };
+
+        console.log("JSON de Lançamento:", lancamento);
+
+        try {
+            const response = await fetch('/lancamento', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(lancamento)
+            });
+
+            if (!response.ok) {
+                throw new Error("Erro ao enviar os dados do lançamento.");
+            }
+
+            alert("Lançamento criado com sucesso!");
+
+            // Chama as funções para gerar os arquivos
+            gerarArquivoXML(lancamento);
+            gerarArquivoJSON(lancamento);
+
+        } catch (error) {
+            alert("Erro ao criar lançamento. Verifique o console para mais detalhes.");
+            console.error(error);
+        }
+    }
+    function gerarArquivoXML(lancamento) {
+        // Criação do XML com base no objeto lancamento
+        const xmlContent = `
+    <lancamento>
+        <id_fornecedor>${lancamento.id_fornecedor}</id_fornecedor>
+        <cod_fornecedor>${fornecedorAtual.cod_fornecedor}</cod_fornecedor>
+        <id_controle>${lancamento.id_controle}</id_controle>
+        <lnc_cc>${lancamento.lnc_cc}</lnc_cc>
+        <lnc_juros>${lancamento.lnc_juros}</lnc_juros>
+        <cont_despesa>${lancamento.cont_despesa}</cont_despesa>
+        <lnc_depreciacao>${lancamento.lnc_depreciacao}</lnc_depreciacao>
+        <vlr_despesa>${lancamento.vlr_despesa}</vlr_despesa>
+        <numeroParcelas>${lancamento.numeroParcelas}</numeroParcelas>
+        <dt_lancamento>${lancamento.dt_lancamento}</dt_lancamento>
+    </lancamento>`;
+
+        // Criação de um blob para o XML
+        const blob = new Blob([xmlContent], { type: 'application/xml' });
+
+        // Criação do link para download
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `lancamento_${lancamento.id_controle}.xml`;
+
+        // Dispara o download
+        link.click();
+
+        // Limpa o objeto URL criado
+        URL.revokeObjectURL(link.href);
+    }
+
+    function gerarArquivoJSON(lancamento) {
+        // Adiciona o cabeçalho ao JSON
+        const lancamentoComCabecalho = {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'} ,
+            body: lancamento
+        };
+
+        // Converte o objeto para uma string JSON formatada
+        const jsonContent = JSON.stringify(lancamentoComCabecalho, null, 4);
+
+        // Cria um blob com o conteúdo JSON
+        const blob = new Blob([jsonContent], { type: 'application/json' });
+
+        // Cria um link para download
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `lancamento_${lancamento.id_controle}.json`;
+
+        // Dispara o download
+        link.click();
+
+        // Libera o recurso associado ao URL
+        URL.revokeObjectURL(link.href);
+    }
+
+</script>
 </body>
 </html>

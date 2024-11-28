@@ -1,33 +1,30 @@
 CREATE TABLE tbl_fornecedor (
     id_fornecedor INTEGER PRIMARY KEY,
     cod_fornecedor VARCHAR(6) UNIQUE ,
-    for_nome VARCHAR(50) UNIQUE ,
+    forn_nome VARCHAR(50) UNIQUE ,
     cont_despesa INTEGER,
     UNIQUE (id_fornecedor, cod_fornecedor)
 );
 
 CREATE TABLE tbl_contrato (
-    id_contrato INTEGER PRIMARY KEY UNIQUE,
-    id_fornecedor INTEGER,
+    id_controle INTEGER PRIMARY KEY UNIQUE,
+    cod_ctto INTEGER,
+    id_n_fornecedor VARCHAR(30),
     num_parcelas INTEGER,
     dt_inicio DATE,
-    dt_fim DATE,
+    taxa_contrato REAL,
     vlr_contrato REAL,
-    ctto_objeto VARCHAR(10)
-);
-
-CREATE TABLE tbl_calculo (
-    id_calculo INTEGER PRIMARY KEY,
-    id_contrato INTEGER,
-    num_parcelas INTEGER,
+    ctto_objeto VARCHAR(10),
+    cc_contrato INTEGER,
     vlr_presente REAL,
-    calc_depreciacao REAL
+    valor_depreciacao REAL,
+    valor_juros REAL
 );
 
 CREATE TABLE tbl_lancamento (
     id_lancamento INTEGER PRIMARY KEY UNIQUE,
     id_fornecedor INTEGER,
-    id_contrato INTEGER,
+    id_controle INTEGER,
     lnc_valorpres REAL,
     lnc_cc INTEGER,
     lnc_juros REAL,
@@ -46,21 +43,14 @@ CREATE TABLE tbl_analise (
     trans_poss_oper BOOLEAN
 );
 
-ALTER TABLE tbl_contrato ADD CONSTRAINT FK_tbl_contrato_3
-    FOREIGN KEY (id_fornecedor)
-        REFERENCES tbl_fornecedor (id_fornecedor);
-
-ALTER TABLE tbl_calculo ADD CONSTRAINT FK_tbl_calculo_2
-    FOREIGN KEY (id_contrato)
-        REFERENCES tbl_contrato (id_contrato);
 
 ALTER TABLE tbl_lancamento ADD CONSTRAINT FK_tbl_lancamento_3
     FOREIGN KEY (id_fornecedor)
         REFERENCES tbl_fornecedor (id_fornecedor);
 
 ALTER TABLE tbl_lancamento ADD CONSTRAINT FK_tbl_lancamento_4
-    FOREIGN KEY (id_contrato)
-        REFERENCES tbl_contrato (id_contrato);
+    FOREIGN KEY (id_controle)
+        REFERENCES tbl_contrato (id_controle);
 
 ALTER TABLE tbl_analise ADD CONSTRAINT FK_tbl_analise_3
     FOREIGN KEY (id_fornecedor)

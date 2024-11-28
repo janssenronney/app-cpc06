@@ -22,6 +22,9 @@ public class FornecedorService {
         // Retorna a lista de todos os fornecedores usando o metodo findAll do repositório
         return fornecedorRepository.findAll();
     }
+    public List<Fornecedor> listarFornecedores(Integer id_fornecedor) {
+        return fornecedorRepository.findById_fornecedor(id_fornecedor);
+    }
 
     // Metodo para buscar um fornecedor pelo ID
     public Optional<Fornecedor> buscarfornecedorPorId(Integer id_fornecedor) {

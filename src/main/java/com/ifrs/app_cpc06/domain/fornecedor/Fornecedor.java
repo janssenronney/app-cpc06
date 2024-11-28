@@ -14,10 +14,10 @@ import lombok.*;
 // ou seja, será mapeada para uma tabela no banco de dados.
 public class Fornecedor {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     // Gera o valor do 'id' automaticamente, com base na estratégia de auto-incremento do banco.
     private int id_fornecedor;
-    private String for_nome;
-    private Integer cont_despesa;
+    private String forn_nome;
+    private int cont_despesa;
     private String cod_fornecedor;
 }
